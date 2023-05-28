@@ -86,10 +86,14 @@ func getRoomSize() Rect {
 		log.Fatal(err.Error())
 	}
 
+	if room.Height <= 0 || room.Width <= 0 {
+		log.Fatal("room size is wrong")
+	}
+
 	return room
 }
 
-func getCarInput() CarStruct {
+func getCarInput(room Rect) CarStruct {
 	fmt.Print("Enter car position and direction separated by comma:")
 	carArr := getInputFromCmd()
 	if len(carArr) != 3 {
@@ -111,6 +115,14 @@ func getCarInput() CarStruct {
 		car.Dir = direction
 	} else {
 		log.Fatal(errors.New("wrong direction"))
+	}
+
+	if car.X < 0 || car.Y < 0 {
+		log.Fatal("Car initial location is wrong")
+	}
+
+	if room.Width <= car.X || room.Height <= car.Y {
+		log.Fatal("Car is not in the room")
 	}
 
 	return car
@@ -143,7 +155,8 @@ func getInputFromCmd() []string {
 func execAction(room Rect, car CarStruct) {
 	fmt.Print("Enter command separated by comma:")
 	action := getInputFromCmd()
-	runCmd(room, car, action)
+	carResult := runCmd(room, car, action)
+	fmt.Print("final: ", carResult)
 }
 
 func runCmd(room Rect, car CarStruct, action []string) CarStruct {
@@ -156,6 +169,9 @@ func runCmd(room Rect, car CarStruct, action []string) CarStruct {
 			if proposedPos, isvalid := makeAMove(room, car, order); isvalid {
 				car.X = proposedPos.Easting
 				car.Y = proposedPos.Northing
+				fmt.Println(car)
+			} else {
+				log.Fatal(errors.New("crushed into wall."))
 			}
 		default:
 			panic("invalid order")
@@ -191,7 +207,7 @@ func (r Rect) contains(pos Pos) bool {
 
 func main() {
 	room := getRoomSize()
-	car := getCarInput()
+	car := getCarInput(room)
 	fmt.Print(room, car)
 
 	execAction(room, car)

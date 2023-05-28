@@ -6,5 +6,5 @@ type CarStruct struct {
 }
 
 type Dir string
-type Pos struct{ Easting, Northing string }
+type Pos struct{ Easting, Northing int }
 type Rect struct{ Width, Height int }
