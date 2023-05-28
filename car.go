@@ -2,7 +2,7 @@ package main
 
 type CarStruct struct {
 	X, Y int
-	Dir
+	Dir  Dir
 }
 
 type Dir string
