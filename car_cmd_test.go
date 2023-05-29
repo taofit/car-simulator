@@ -22,8 +22,8 @@ var cmdTests = []cmdTest{
 	{Rect{5, 5}, CarStruct{2, 3, "N"}, []string{"R", "F", "F", "L", "F"}, expectedStruct{CarStruct{4, 4, "N"}, nil}},
 	{Rect{6, 5}, CarStruct{3, 2, "E"}, []string{"F", "L", "F", "L", "F"}, expectedStruct{CarStruct{3, 3, "W"}, nil}},
 	{Rect{15, 5}, CarStruct{3, 2, "E"}, []string{"F", "L", "F", "R", "F", "F", "F", "F"}, expectedStruct{CarStruct{8, 3, "E"}, nil}},
-	{Rect{5, 5}, CarStruct{3, 2, "E"}, []string{"F", "L", "F", "R", "F", "F", "F", "F"}, expectedStruct{CarStruct{}, errors.New("crushed into wall")}},
-	{Rect{5, 5}, CarStruct{3, 2, "E"}, []string{"F", "L", "F", "R", "f", "F", "F", "F"}, expectedStruct{CarStruct{}, errors.New("invalid input command")}},
+	{Rect{5, 5}, CarStruct{3, 2, "E"}, []string{"F", "L", "F", "R", "F", "F", "F", "F"}, expectedStruct{CarStruct{}, errors.New("Crushed into wall")}},
+	{Rect{5, 5}, CarStruct{3, 2, "E"}, []string{"F", "L", "F", "R", "f", "F", "F", "F"}, expectedStruct{CarStruct{}, errors.New("Invalid input command")}},
 }
 
 func TestCmd(t *testing.T) {

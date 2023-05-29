@@ -98,7 +98,7 @@ func getCarInput(room Rect) CarStruct {
 	fmt.Println("Enter car position and direction separated by comma:")
 	carArr := getInputFromCmd()
 	if len(carArr) != 3 {
-		log.Fatal("initial data length is wrong")
+		log.Fatal("Initial data length is wrong")
 	}
 	var err error
 	var car CarStruct
@@ -158,10 +158,9 @@ func execAction(room Rect, car CarStruct) {
 	action := getInputFromCmd()
 	carResult, err := runCmd(room, car, action)
 	if err != nil {
-		log.Fatal(err)
-	} else {
-		fmt.Println("Final car position and direction: ", carResult)
+		log.Fatalln("Fail,", err)
 	}
+	fmt.Println("Success, final car position and direction: ", carResult)
 }
 
 func runCmd(room Rect, car CarStruct, action []string) (CarStruct, error) {
@@ -175,10 +174,10 @@ func runCmd(room Rect, car CarStruct, action []string) (CarStruct, error) {
 				car.X = proposedPos.Easting
 				car.Y = proposedPos.Northing
 			} else {
-				return CarStruct{}, errors.New("crushed into wall")
+				return CarStruct{}, errors.New("Crushed into wall")
 			}
 		default:
-			return CarStruct{}, errors.New("invalid input command")
+			return CarStruct{}, errors.New("Invalid input command")
 		}
 	}
 
