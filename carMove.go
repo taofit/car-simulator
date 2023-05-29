@@ -15,6 +15,7 @@ var moveValues = getMoveValues()
 
 func getNewDirection() map[string]string {
 	var nextDirection = make(map[string]string)
+
 	key := fmt.Sprintf("%s-%s", "N", "L")
 	nextDirection[key] = "W"
 
@@ -69,7 +70,7 @@ func getMoveValues() map[string]int {
 }
 
 func getRoomSize() Rect {
-	fmt.Print("Enter room size separated by comma:")
+	fmt.Println("Enter room size separated by comma:")
 	sizeArr := getInputFromCmd()
 	if len(sizeArr) != 2 {
 		log.Fatal("inital data length is wrong")
@@ -94,7 +95,7 @@ func getRoomSize() Rect {
 }
 
 func getCarInput(room Rect) CarStruct {
-	fmt.Print("Enter car position and direction separated by comma:")
+	fmt.Println("Enter car position and direction separated by comma:")
 	carArr := getInputFromCmd()
 	if len(carArr) != 3 {
 		log.Fatal("initial data length is wrong")
@@ -114,7 +115,7 @@ func getCarInput(room Rect) CarStruct {
 	if isValidDirection(direction) {
 		car.Dir = direction
 	} else {
-		log.Fatal(errors.New("wrong direction"))
+		log.Fatal(errors.New("Wrong direction"))
 	}
 
 	if car.X < 0 || car.Y < 0 {
@@ -153,13 +154,17 @@ func getInputFromCmd() []string {
 }
 
 func execAction(room Rect, car CarStruct) {
-	fmt.Print("Enter command separated by comma:")
+	fmt.Println("Enter command separated by comma:")
 	action := getInputFromCmd()
-	carResult := runCmd(room, car, action)
-	fmt.Print("final: ", carResult)
+	carResult, err := runCmd(room, car, action)
+	if err != nil {
+		log.Fatal(err)
+	} else {
+		fmt.Println("Final car position and direction: ", carResult)
+	}
 }
 
-func runCmd(room Rect, car CarStruct, action []string) CarStruct {
+func runCmd(room Rect, car CarStruct, action []string) (CarStruct, error) {
 	for _, order := range action {
 		switch order {
 		case "L", "R":
@@ -169,16 +174,15 @@ func runCmd(room Rect, car CarStruct, action []string) CarStruct {
 			if proposedPos, isvalid := makeAMove(room, car, order); isvalid {
 				car.X = proposedPos.Easting
 				car.Y = proposedPos.Northing
-				fmt.Println(car)
 			} else {
-				log.Fatal(errors.New("crushed into wall."))
+				return CarStruct{}, errors.New("crushed into wall")
 			}
 		default:
-			panic("invalid order")
+			return CarStruct{}, errors.New("invalid input command")
 		}
 	}
 
-	return car
+	return car, nil
 }
 
 func makeAMove(room Rect, car CarStruct, order string) (Pos, bool) {
@@ -208,7 +212,7 @@ func (r Rect) contains(pos Pos) bool {
 func main() {
 	room := getRoomSize()
 	car := getCarInput(room)
-	fmt.Print(room, car)
+	fmt.Printf("Room size: %d * %d; car's location: (%d, %d), car's direction: %s\n", room.Width, room.Height, car.X, car.Y, car.Dir)
 
 	execAction(room, car)
 }
