@@ -78,14 +78,15 @@ Before submitting it to us, please make sure that the following requirements hav
 
 
 # Solution & Explanation
+Solution is written in Golang
 
 If a room size is w and h, then the valid car's position (x, y) is in the range of (0,0) to (w-1, h-1) inclusive.
 
-If the car moves to North one cell, its y-axis will increment by 1, if the car moves to East, its x-axis will increment by 1, and vice versa.
+If the car moves to North one cell, its y-axis will increment by 1, if the car moves to East on cell, its x-axis will increment by 1, and vice versa.
 
 ## Instruction
 
-Run program in docker:
+### Run program in docker:
 
 1, docker build --tag app-car .<br>
 2, docker run -it app-car
@@ -95,9 +96,11 @@ step 1: enter 2 digit number separated by comma<br>
 step 2: enter 2 digit number and a direction separated by comma<br>
 setp 3: enter a series of letters(command) separated by comma<br>
 
-If run program in host machine without docker
-then make sure goalng is install on the host machine, then run command: `go run .`<br> 
+### Run program in host machine without docker
+then make sure goalng is installed on the host machine, then run command: `go run .` under project root folder<br> 
 and follow the above three steps to run the program
 
 ## testing
-run command: `go test -v`
+
+1, run test using docker, run command: `docker-compose up`<br>
+2, run test under host machine: run command: `go test -v`
